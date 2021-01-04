@@ -1,0 +1,77 @@
+#include<stdio.h>
+#include<stdbool.h>
+#include<stdlib.h>
+
+typedef struct binary_node{
+	int data;
+	struct binary_node *left;
+	struct binary_node *right;
+}node;
+
+/*node newnode(int d) {
+	node*root = (node*)malloc(sizeof node)
+}*/
+
+void insert(node**root,int d) {
+	if(*root == NULL) {
+		(*root) = (node*)malloc(sizeof (node));
+		(*root)->left = NULL;
+		(*root)->data = d;
+		(*root)->right = NULL;
+	}
+	else {
+		if(d<((*root)->data)){
+			insert(&((*root)->left),d);
+		}
+		else
+			insert(&((*root)->right),d);
+	}
+}
+
+
+int findMin(node* root) 
+{ 
+    // Base case 
+    if (root == NULL) 
+      return 9999; 
+  
+    // Return minimum of 3 values: 
+    // 1) Root's data 2) Max in Left Subtree 
+    // 3) Max in right subtree 
+    int res = root->data; 
+    int lres = findMin(root->left); 
+    int rres = findMin(root->right); 
+    if (lres < res) 
+      res = lres; 
+    if (rres < res) 
+      res = rres; 
+    return res; 
+} 
+
+int main() {
+	node*root = NULL;
+	int choice;
+	int d;
+
+	printf("1.Insert in BST\n5.Search\n6.Exit\n");
+	printf("Your choice: ");
+	scanf("%d",&choice);
+
+	while(choice!=3) {
+		switch(choice) {
+			case 1: printf("Enter element to be inserted: ");
+					scanf("%d",&d);
+					insert(&root,d);
+					printf("%d inserted in the tree\n",d);
+					break;
+
+			case 2: printf("Minimum element is: ");
+					int x=findMin(root);
+					printf("%d\n",x);
+					break;
+		}
+		printf("Your next choice: ");
+		scanf("%d",&choice);
+	}
+	return 0;
+}
